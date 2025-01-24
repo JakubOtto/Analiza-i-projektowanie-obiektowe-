@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>System wynajmu mieszkań</title>
+</head>
+<body>
+<h1>Lista mieszkań</h1>
+<table border="1">
+    <tr>
+        <th>Adres</th>
+        <th>Cena</th>
+        <th>Status</th>
+        <th>Akcja</th>
+    </tr>
+    <tr th:each="property : ${properties}">
+        <td th:text="${property.address}"></td>
+        <td th:text="${property.price} + ' PLN'"></td>
+        <td th:text="${property.rented ? 'Wynajęte' : 'Dostępne'}"></td>
+        <td>
+            <form th:action="@{/rent}" method="post" th:if="!${property.rented}">
+                <input type="hidden" name="id" th:value="${property.id}" />
+                <button type="submit">Wynajmij</button>
+            </form>
+            <form th:action="@{/unrent}" method="post" th:if="${property.rented}">
+                <input type="hidden" name="id" th:value="${property.id}" />
+                <button type="submit">Zwolnij</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
